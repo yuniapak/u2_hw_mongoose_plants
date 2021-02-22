@@ -9,7 +9,8 @@ In this deliverable we'll be building and deploying our very own custom API abou
 
 - `Fork` and `clone` this ropository
 
-## Express, Mongoose, & MongoDB
+## Instructions
+### Express, Mongoose, & MongoDB
 
 Let's start!
 
@@ -427,7 +428,7 @@ Test delete (DEL) in Postman using a URL like this http://localhost:3000/api/pla
 
 Success! We built a full CRUD JSON API in MongoDB, Mongoose, and Express using Express Router!
 
-## Deployment
+### Deployment
 ![](https://miro.medium.com/max/1320/1*owg5RPtazedwH8fxpZF_vg.png)
 > Image from [heroku.com](https://www.heroku.com)
 
@@ -570,6 +571,9 @@ Test the endpoints :)
 
 ![](http://www.winsold.com/sites/all/modules/winsold/images/checkmark.svg)
 
+## Bonus
+
+## Requirements
 
 ## Resources
 
