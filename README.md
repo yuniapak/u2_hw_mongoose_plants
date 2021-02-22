@@ -1,11 +1,15 @@
-# ![](https://ga-dash.s3.amazonaws.com/production/assets/logo-9f88ae6c9c3871690e33280fcf557f33.png)  SOFTWARE ENGINEERING IMMERSIVE
+# Mongoose Plants API
+
+![plants](https://c.pxhere.com/photos/c0/5d/leaf_nature_wood_green_the_leaves_hwalyeob_abstract_plants-495884.jpg!d)
+
+## Overview
+In this deliverable we'll be building and deploying our very own custom API about plants! We'll be building it from the ground up to cover the entire process using `express.Router`.
 
 ## Getting started
 
-1. Fork
-1. Clone
+- `Fork` and `clone` this ropository
 
-# Express, Mongoose, & MongoDB
+## Express, Mongoose, & MongoDB
 
 Let's start!
 
