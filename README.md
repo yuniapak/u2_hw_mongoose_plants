@@ -570,9 +570,6 @@ Test the endpoints :)
 
 ![](http://www.winsold.com/sites/all/modules/winsold/images/checkmark.svg)
 
-## Feedback
-
-> [Take a minute to give us feedback on this lesson so we can improve it!](https://forms.gle/vgUoXbzxPWf4oPCX6)
 
 ## Resources
 
