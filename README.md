@@ -691,11 +691,21 @@ https://your-heroku-app-name.herokuapp.com/api/plants
 
 **Excellent!**
 
-![](https://cdn6.bigcommerce.com/s-oqm1pc/product_images/theme_images/fp-banner-succulent-assortment-1.jpg?t=1490216851)
+![](https://i0.wp.com/media.boingboing.net/wp-content/uploads/2018/06/echinopsis-02.gif?resize=480%2C270&ssl=1)
 
 
 ## Requirements
+- All plant routes and controllers testing properly through Insomnia 
+- Database deployed on MongoDB Atlas
+- Server deployed on Heroku
+
+## Bonus
+- Add your own selection of plants to your live API!
+
+
+## Submission Guidelines
+- Pull Request must be submitted utilizing these guidelines: [PR Guidelines](https://github.com/SEI-R-1-25/template_pull_request)
 
 ## Resources
-
-- https://devcenter.heroku.com/articles/mongolab
+- [Mongoose Express Lesson](https://github.com/SEI-R-1-25/u2_lesson_mongoose_express)
+- [Mongoose Data Model Lesson](https://github.com/SEI-R-1-25/u2_lesson_mongoose_data_model)
