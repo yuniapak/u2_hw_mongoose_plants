@@ -16,8 +16,8 @@ In this deliverable we'll be building and deploying our very own custom API abou
 Let's start!
 
 ```sh
-cd mongodb-mongoose-express-using-router
-npm init -y && npm install mongoose
+cd u2_hw_mongoose_plants
+npm init -y && npm install mongoose@5.11.15
 mkdir db models seed
 touch db/index.js models/plant.js seed/plants.js
 ```
@@ -180,9 +180,13 @@ const express = require('express');
 const routes = require('./routes');
 const db = require('./db');
 
+// require() imports and middleware here ^ ///////
+
 const PORT = process.env.PORT || 4000;
 
 const app = express();
+
+// app.use() middleware here ^ ///////////////////
 
 app.use('/api', routes);
 
@@ -198,8 +202,21 @@ npm run dev
 
 Test the root endpoint in your browser: http://localhost:4000/api/
 
+- You should see something like this in your terminal:
+    
+    ```sh
+    [nodemon] starting `node server.js`
+    Listening on port: 4000
+    Successfully connected to MongoDB.
+    ```
+- And something like this in your browser: `This is root!`
+
+
 ### Routes and Controllers
 Good, now let's work on the controllers. Controllers are where we will set up all of our logic e.g. what does the API do when we want to create a new plant? Update a plant? etc.
+
+___
+#### createPlant
 
 u2_hw_mongoose_plants/controllers/index.js
 ```js
@@ -223,18 +240,44 @@ module.exports = {
 ```
 
 Remember we will need the express `body-parser` middleware to access the `req.body` object.
-- Make sure to shut down your server with `ctrl + c` first, then run:
+
+Make sure to shut down your server with `ctrl + c` first, then run:
 
 ```sh
 npm i body-parser
 ```
 
-- And add the following lines of code to the top of server.js:
+And add the following lines of code to server.js:
 
 ```js
 const bodyParser = require('body-parser');
 app.use(bodyParser.json())
 ```
+
+<details><summary>server.js should look like this afterward:</summary>
+    
+    
+  ```js
+  const express = require('express');
+  const routes = require('./routes');
+  const db = require('./db');
+  const bodyParser = require('body-parser');
+  // require() imports and middleware here ^ ///////
+
+  const PORT = process.env.PORT || 4000;
+
+  const app = express();
+  app.use(bodyParser.json());
+  // app.use() middleware here ^ ///////////////////
+
+  app.use('/api', routes);
+
+  db.on('error', console.error.bind(console, 'MongoDB connection error:'))
+
+  app.listen(PORT, () => console.log(`Listening on port: ${PORT}`))
+  ```
+    
+</details>
 
 Run the server again:
 
@@ -257,10 +300,6 @@ router.post('/plants', controllers.createPlant)
 module.exports = router;
 ```
 
-Make sure your json api server is running:
-```sh
-npm run dev
-```
 
 Use Insomnia to send a POST method to test the create route (http://localhost:4000/api/plants):
 
@@ -271,6 +310,25 @@ Use Insomnia to send a POST method to test the create route (http://localhost:40
     "image": "https://testimage.com/plant.png"
 }
 ```
+
+- If it was successful, you should see something like this in Insomnia:
+
+    ```js
+    {
+      "plant": {
+        "_id": "5e38921e9c3bd077f50dc9a2",
+        "name": "Test Plant",
+        "description": "Test Description",
+        "image": "https://testimage.com/plant.png",
+        "createdAt": "2021-02-23T02:07:55.919Z",
+        "updatedAt": "2021-02-23T02:07:55.919Z",
+        "__v": 0
+      }
+    }
+    ```
+
+___
+#### getAllPlants
 
 Awesome! Now I want to create a controller method to grab all the plants from the database:
 
@@ -310,7 +368,18 @@ Add the following route to your ./routes/index.js file:
 router.get('/plants', controllers.getAllPlants)
 ```
 
-Open http://localhost:4000/api/plants in your browser or do a GET request in Postman.
+Open http://localhost:4000/api/plants in your browser or do a GET request in Insomnia.
+
+- You should see an JSON object with an array of all `"plants":` in the database
+- Make sure to grab the `_id` of the `"Test Plant"` we just added in the previous step, it will be useful for the next few routes.
+- It should look something like this:
+    
+    ```js
+    "_id": "5e38921e9c3bd077f50dc9a2"
+    ```
+
+___
+#### getPlantById
 
 Nice, now let's add the ability to find a specific plant:
 
@@ -348,7 +417,8 @@ u2_hw_mongoose_plants/routes/index.js
 router.get('/plants/:id', controllers.getPlantById)
 ```
 
-Test it! http://localhost:4000/api/plants/5e38921e9c3bd077f50dc9a2
+Test it! (Your URL shold look like this, but with the `_id` of _your Test Plant_:
+http://localhost:4000/api/plants/5e38921e9c3bd077f50dc9a2
 
 
 This is a good point to integrate better logging. Right now, if we check our terminal when we hit the http://localhost:4000/api/plants/5e38921e9c3bd077f50dc9a2 endpoint we see the raw SQL that was executed. For debugging purposes and overall better logging we're going to use an express middleware called `morgan`:
@@ -363,6 +433,34 @@ const logger = require('morgan');
 app.use(logger('dev'))
 ```
 
+<details><summary>server.js should look like this afterward:</summary>
+    
+    
+  ```js
+  const express = require('express');
+  const routes = require('./routes');
+  const db = require('./db');
+  const bodyParser = require('body-parser');
+  const logger = require('morgan');
+  // require() imports and middleware here ^ ///////
+
+  const PORT = process.env.PORT || 4000;
+
+  const app = express();
+  app.use(bodyParser.json());
+  app.use(logger('dev'))
+  // app.use() middleware here ^ ///////////////////
+
+  app.use('/api', routes);
+
+  db.on('error', console.error.bind(console, 'MongoDB connection error:'))
+
+  app.listen(PORT, () => console.log(`Listening on port: ${PORT}`))
+  ```
+    
+</details>
+
+
 Let's see the result:
 ```sh
 npm run dev
@@ -375,6 +473,9 @@ GET /api/plants/5e38921e9c3bd077f50dc9a2 200 14.273 ms
 ```
 
 That's `morgan`!
+
+___
+#### updatePlant and deletePlant
 
 So we can now create plants, show all plants, and show a specific plant. How about updating a plant and deleting a plant?
 
