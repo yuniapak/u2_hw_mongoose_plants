@@ -127,7 +127,7 @@ Cool, enough Mongoose. Now, Express. Let's install Express and Nodemon for devel
 
 ```sh
 npm install express
-npm install nodemon -D
+npm install --save-dev nodemon
 ```
 And now let's setup our express folders:
 
@@ -142,7 +142,8 @@ Modify your package.json file:
 ....
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
 ....
 ```
@@ -165,7 +166,7 @@ const express = require('express');
 const routes = require('./routes');
 const db = require('./db');
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
 const app = express();
 
@@ -178,14 +179,14 @@ app.listen(PORT, () => console.log(`Listening on port: ${PORT}`))
 
 Test the route:
 ```sh
-npm start
+npm run dev
 ```
 
-Test the root endpoint in your browser: http://localhost:3000/api/
+Test the root endpoint in your browser: http://localhost:4000/api/
 
 Good, now let's work on the controller. The controller is where we will set up all of our logic e.g. what does the API do when we want to create a new plant? Update a plant? etc.
 
-mongodb-mongoose-express-using-router/controllers/index.js
+u2_hw_mongoose_plants/controllers/index.js
 ```js
 const Plant = require('../models/plant');
 
@@ -206,23 +207,24 @@ module.exports = {
 }
 ```
 
-Remember we will need the express body-parser middleware to access the req.body object so:
+Remember we will need the express `body-parser` middleware to access the `req.body` object.
+- Make sure to shut down your server with `ctrl + c` first, then run:
 
 ```sh
 npm i body-parser
 ```
 
-Run the server again:
-
-```sh
-npm start
-```
-
-Add the following lines of code to the top of server.js:
+- And add the following lines of code to the top of server.js:
 
 ```js
 const bodyParser = require('body-parser');
 app.use(bodyParser.json())
+```
+
+Run the server again:
+
+```sh
+npm run dev
 ```
 
 Cool. We have the logic to create a new plant. Now let's create a route on our server to connect the request with the controller:
