@@ -3,7 +3,7 @@
 ![barnsely's](https://i.ytimg.com/vi/iGMGVpLMtMs/maxresdefault.jpg)
 
 ## Overview
-In this deliverable we'll be building and deploying our very own custom API about plants! We'll be building it from the ground up to cover the entire process using `express.Router`.
+In this deliverable we'll be building our very own custom API about plants! We'll be building it from the ground up to cover the entire process using `express.Router`.
 
 ## Getting started
 
@@ -182,7 +182,7 @@ const db = require('./db');
 
 // require() imports and middleware here ^ ///////
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3001;
 
 const app = express();
 
@@ -200,13 +200,13 @@ Test the route:
 npm run dev
 ```
 
-Test the root endpoint in your browser: http://localhost:4000/api/
+Test the root endpoint in your browser: http://localhost:3001/api/
 
 - You should see something like this in your terminal:
     
     ```sh
     [nodemon] starting `node server.js`
-    Listening on port: 4000
+    Listening on port: 3001
     Successfully connected to MongoDB.
     ```
 - And something like this in your browser: `This is root!`
@@ -263,7 +263,7 @@ app.use(bodyParser.json())
   const bodyParser = require('body-parser');
   // require() imports and middleware here ^ ///////
 
-  const PORT = process.env.PORT || 4000;
+  const PORT = process.env.PORT || 3001;
 
   const app = express();
   app.use(bodyParser.json());
@@ -300,7 +300,7 @@ module.exports = router;
 ```
 
 
-Use Insomnia to send a POST method to test the create route (http://localhost:4000/api/plants):
+Use Insomnia to send a POST method to test the create route (http://localhost:3001/api/plants):
 
 ```js
 {
@@ -369,7 +369,7 @@ Add the following route to your ./routes/index.js file:
 router.get('/plants', controllers.getAllPlants)
 ```
 
-Open http://localhost:4000/api/plants in your browser or do a GET request in Insomnia.
+Open http://localhost:3001/api/plants in your browser or do a GET request in Insomnia.
 
 - You should see an JSON object with an array of all `"plants":` in the database
 - Make sure to grab the `_id` of the `"Test Plant"` we just added in the previous step, it will be useful for the next few routes.
@@ -419,9 +419,9 @@ router.get('/plants/:id', controllers.getPlantById)
 ```
 
 Test it! Your URL shold look like this, but with the `_id` of _your Test Plant_ in your URL `:params` :
-http://localhost:4000/api/plants/5e38921e9c3bd077f50dc9a2
+http://localhost:3001/api/plants/5e38921e9c3bd077f50dc9a2
 
-This is a good point to integrate better logging. Right now, if we check our terminal when we hit the http://localhost:4000/api/plants/5e38921e9c3bd077f50dc9a2 endpoint we see the raw SQL that was executed. For debugging purposes and overall better logging we're going to use an express middleware called `morgan`:
+This is a good point to integrate better logging. Right now, if we check our terminal when we hit the http://localhost:3001/api/plants/5e38921e9c3bd077f50dc9a2 endpoint we see the raw SQL that was executed. For debugging purposes and overall better logging we're going to use an express middleware called `morgan`:
 
 ```sh
 npm install morgan
@@ -444,7 +444,7 @@ app.use(logger('dev'))
   const logger = require('morgan');
   // require() imports and middleware here ^ ///////
 
-  const PORT = process.env.PORT || 4000;
+  const PORT = process.env.PORT || 3001;
 
   const app = express();
   app.use(bodyParser.json());
@@ -469,7 +469,7 @@ npm run dev
 
 In another terminal, run:
 ```
-open http://localhost:4000/api/plants/5e38921e9c3bd077f50dc9a2
+open http://localhost:3001/api/plants/5e38921e9c3bd077f50dc9a2
 ```
 
 You should now see in your server's terminal something like this:
@@ -541,7 +541,7 @@ router.delete('/plants/:id', controllers.deletePlant)
 
 Test update (PUT) in Insomnia. Remember that you'll have to use the `_id` of _your_ Test Plant. Your request body in Insomnia will have to look something like this:
 
-http://localhost:4000/api/plants/5e38921e9c3bd077f50dc9a2
+http://localhost:3001/api/plants/5e38921e9c3bd077f50dc9a2
 
 ```js
 {
@@ -551,156 +551,21 @@ http://localhost:4000/api/plants/5e38921e9c3bd077f50dc9a2
 }
 ```
 
-Test delete (DEL) in Insomnia using a URL like this http://localhost:4000/api/plants/5e38921e9c3bd077f50dc9a2
+Test delete (DEL) in Insomnia using a URL like this http://localhost:3001/api/plants/5e38921e9c3bd077f50dc9a2
 
 Success! We built a full CRUD JSON API in MongoDB, Mongoose, and Express using Express Router! 
 
-## Deployment with MongoDB Atlas and Heroku
-
-![](https://miro.medium.com/max/1320/1*owg5RPtazedwH8fxpZF_vg.png)
-
-In this next step we are going to learn how to deploy our app to Heroku and create a production-ready MongoDB database using MongoDB Atlas.
-
-[MongoDB Atlas](https://www.mongodb.com/cloud/atlas) manages our database beautifully - things like scaling the database as it grows, backups, and many more features are all handled by [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
-
-### Creating an Account and Starting a New Project
-
-First step is to signup to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) here: https://www.mongodb.com/cloud/atlas
-
-Once you're logged in you'll need to create a **New Organization** unless you already have one. Your organization will be used for future projects like this.
-
-After creating your organization, you'll need to create a **New Project**. In this case, our project will be called `plantsDatabase`. Once created, we'll get down to business with our database deployment!
-
-### Creating a Database Cluster
-
-Now click the green button `"Build a Cluster"`
-
-<p align="center">
-  <img src="https://i.imgur.com/KcgbFXc.png" width="80%"/>
-</p>
-
-##
-
-Select the **free** tier
-
-<p align="center">
-  <img src="https://i.imgur.com/vAgMBoM.png" width="60%"/>
-</p>
-
-##
-
-Select AWS, the N. Virginia free tier (Oregon if you're closer to the west coast), and click the green `"Create Cluster"` button
-
-<p align="center">
-  <img src="https://i.imgur.com/ylkZwtl.png" width="60%"/>
-</p>
-
-##
-
-Grab a cup of coffee ☕ it will take a few minutes for MongoDB Atlas to create your databases in the cloud
-
-<p align="center">
-  <img src="https://i.imgur.com/yVn9eLy.png" width="80%"/>
-</p>
-
-### Creating a Connection
-
-Once your database has been created, click the `"CONNECT"` button
-
-<p align="center">
-  <img src="https://i.imgur.com/OfroaVP.png" width="80%"/>
-</p>
-
-##
-
-You should see a modal pop up. Click "Add a Different IP Address" button
-
-Then enter 0.0.0.0/0 for the IP Address input (this will allow all IP Addresses to access the database)
-
-Click the green `"Add IP Address"` button
-
-Now let's secure the database. Create a username/password (remember the password, you will need it later)
-
-Click the green `"Create Database User"` button
-
-Next, click the `"Choose a connection method"` button in the lower right of the modal
-
-<p align="center">
-  <img src="https://i.imgur.com/hv860VE.png" width="60%"/>
-</p>
-
-##
-
-Click `"Connect Your Application"`
-
-<p align="center">
-  <img src="https://i.imgur.com/40KJqQt.png" width="60%"/>
-</p>
-
-##
-
-Take a look at the second section, titled `"Add your connection string into your application code"`
-
-
-
-<p align="center"><img src="https://i.imgur.com/vZnBMKN.png" width="60%"/></p>
-
-
-##
-
-Copy the connection string and put it into a scratch file for the time being
-
-- Replace `<password>`, brackets and all, with the actual password you just set for the Database User. 
-- Replace `myFirstDatabase` with the name of the database that connections will use by default. In this case we named it `plantsDatabase`.
-
-And that will do it for Atlas database hosting! Make sure your updated connection string is ready to go for the next step!
-
-___
-### Deploying Your Server Heroku and Connecting the Database
-
-Now we're ready to deploy to Heroku and specify our MongoDB Atlas URI connection string to tell Heroku where our database lives.
-
-> Make sure you're on the `main` branch!
-
-1. `heroku create your-new-heroku-app-name`
-
-
-```sh
-git remote set-url heroku https://git.heroku.com/your-new-heroku-app-name.git
-```
-
-2. `heroku buildpacks:set heroku/nodejs`
-3. `heroku config:set PROD_MONGODB="<INSERT YOUR MONGODB URI CONNECTION STRING HERE>"`
-    - Make sure you've replaced the word test in your connection string with the name of your a database: plantsDatabase
-4. `git status`
-5. `git commit -am "add any pending changes"`
-6. `git push heroku master`
-    - This step will take a second, make sure to allow it to finish before moving on
-8. `heroku run node seed/plants.js`
-    - If all is successful, you'll see something like this in your terminal:
-        
-        ```sh
-        Running node seed/plants.js on ⬢ plantsDatabase... up, run.8137 (Free)
-        Successfully connected to MongoDB.
-        Created some plants!
-        ```
-
-Congrats! We've created a fully functional, live, deployed API! Test the endpoints :)
-
-https://your-heroku-app-name.herokuapp.com/api/plants
-
-**Excellent!**
 
 ![](https://i0.wp.com/media.boingboing.net/wp-content/uploads/2018/06/echinopsis-02.gif?resize=480%2C270&ssl=1)
 
 
 ## Requirements
+- Express connected to MongoDB through Mongoose connection
 - All plant routes and controllers testing properly through Insomnia 
-- Database deployed on MongoDB Atlas
-- Server deployed on Heroku
+
 
 ## Bonus
-- Add your own selection of plants to your live API!
+- Add your own selection of plants to your API!
 
 
 ## Submission Guidelines
