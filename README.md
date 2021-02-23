@@ -8,9 +8,10 @@ In this deliverable we'll be building and deploying our very own custom API abou
 ## Getting started
 
 - `Fork` and `clone` this ropository
+- It's recommended that you shut down your server with `ctrl + c` every time you'll need to add a package so you won't run into multiple server instance port errors.
 
 ## Instructions
-### Express, Mongoose, & MongoDB
+### Setup
 
 Let's start!
 
@@ -27,6 +28,7 @@ Now let's open up Visual Studio Code and write some code:
 code .
 ```
 
+### Mongoose Database Connection
 Inside our `db` folder we are going to use Mongoose to establish a connection to our MongoDB `plantsDatabase`:
 
 mongodb-mongoose-express-using-router/db/index.js
@@ -49,6 +51,8 @@ const db = mongoose.connection
 module.exports = db
 ```
 
+
+### Mongoose Schemas and Models
 Although, MongoDB is schema-less, Mongoose allows us to write a schema for our plant model which makes it nice to know what is a plant in our database and what a plant "looks" like in our database:
 
 mongodb-mongoose-express-using-router/models/plant.js
@@ -70,6 +74,7 @@ module.exports = mongoose.model('plants', Plant)
 
 Cool. We have a "blueprint" for what a plant is. Let's now use it and create plants.
 
+### Seeding The Database
 mongodb-mongoose-express-using-router/seed/plants.js
 ```js
 const db = require('../db')
@@ -123,6 +128,7 @@ Create a .gitignore file `touch .gitignore`!
 .DS_Store
 ```
 
+### Express Server
 Cool, enough Mongoose. Now, Express. Let's install Express and Nodemon for development:
 
 ```sh
@@ -184,7 +190,8 @@ npm run dev
 
 Test the root endpoint in your browser: http://localhost:4000/api/
 
-Good, now let's work on the controller. The controller is where we will set up all of our logic e.g. what does the API do when we want to create a new plant? Update a plant? etc.
+### Routes and Controllers
+Good, now let's work on the controllers. Controllers are where we will set up all of our logic e.g. what does the API do when we want to create a new plant? Update a plant? etc.
 
 u2_hw_mongoose_plants/controllers/index.js
 ```js
@@ -244,10 +251,10 @@ module.exports = router;
 
 Make sure your json api server is running:
 ```sh
-npm start
+npm run dev
 ```
 
-Use Postman (POST) method to test the create route (http://localhost:3000/api/plants):
+Use Insomnia to send a POST method to test the create route (http://localhost:4000/api/plants):
 
 ```js
 {
@@ -259,7 +266,7 @@ Use Postman (POST) method to test the create route (http://localhost:3000/api/pl
 
 Awesome! Now I want to create a controller method to grab all the plants from the database:
 
-mongodb-mongoose-express-using-router/controllers/index.js
+u2_hw_mongoose_plants/controllers/index.js
 ```js
 const Plant = require('../models/plant');
 
@@ -295,11 +302,11 @@ Add the following route to your ./routes/index.js file:
 router.get('/plants', controllers.getAllPlants)
 ```
 
-Open http://localhost:3000/api/plants in your browser or do a GET request in Postman.
+Open http://localhost:4000/api/plants in your browser or do a GET request in Postman.
 
 Nice, now let's add the ability to find a specific plant:
 
-mongodb-mongoose-express-using-router/controllers/index.js
+u2_hw_mongoose_plants/controllers/index.js
 ```js
 const getPlantById = async (req, res) => {
     try {
@@ -317,7 +324,7 @@ const getPlantById = async (req, res) => {
 
 Add it to the export:
 
-mongodb-mongoose-express-using-router/controllers/index.js
+u2_hw_mongoose_plants/controllers/index.js
 ```js
 module.exports = {
     createPlant,
@@ -328,14 +335,15 @@ module.exports = {
 
 Add the route:
 
-mongodb-mongoose-express-using-router/routes/index.js
+u2_hw_mongoose_plants/routes/index.js
 ```js
 router.get('/plants/:id', controllers.getPlantById)
 ```
 
-Test it! http://localhost:3000/api/plants/5e38921e9c3bd077f50dc9a2
+Test it! http://localhost:4000/api/plants/5e38921e9c3bd077f50dc9a2
 
-This is a good point to integrate better logging. Right now, if we check our terminal when we hit the http://localhost:3000/api/plants/5e38921e9c3bd077f50dc9a2 endpoint we see the raw SQL that was executed. For debugging purposes and overall better logging we're going to use an express middleware called morgan:
+
+This is a good point to integrate better logging. Right now, if we check our terminal when we hit the http://localhost:4000/api/plants/5e38921e9c3bd077f50dc9a2 endpoint we see the raw SQL that was executed. For debugging purposes and overall better logging we're going to use an express middleware called `morgan`:
 
 ```sh
 npm install morgan
@@ -349,8 +357,8 @@ app.use(logger('dev'))
 
 Let's see the result:
 ```sh
-npm start
-open http://localhost:3000/api/plants/5e38921e9c3bd077f50dc9a2
+npm run dev
+open http://localhost:4000/api/plants/5e38921e9c3bd077f50dc9a2
 ```
 
 You should now see in your terminal something like this:
@@ -358,11 +366,11 @@ You should now see in your terminal something like this:
 GET /api/plants/5e38921e9c3bd077f50dc9a2 200 14.273 ms
 ```
 
-That's morgan!
+That's `morgan`!
 
 So we can now create plants, show all plants, and show a specific plant. How about updating a plant and deleting a plant?
 
-mongodb-mongoose-express-using-router/controllers/index.js
+u2_hw_mongoose_plants/controllers/index.js
 ```js
 const updatePlant = async (req, res) => {
     try {
@@ -408,15 +416,15 @@ module.exports = {
 
 Let's add our routes:
 
-mongodb-mongoose-express-using-router/routes/index.js
+u2_hw_mongoose_plants/routes/index.js
 ```js
 router.put('/plants/:id', controllers.updatePlant)
 router.delete('/plants/:id', controllers.deletePlant)
 ```
 
-Test update (PUT) in Postman. Your request body in Postman will have to look something like this:
+Test update (PUT) in Insomnia. Your request body in Insomnia will have to look something like this:
 
-http://localhost:3000/api/plants/5e38921e9c3bd077f50dc9a2
+http://localhost:4000/api/plants/5e38921e9c3bd077f50dc9a2
 
 ```js
 {
@@ -426,11 +434,11 @@ http://localhost:3000/api/plants/5e38921e9c3bd077f50dc9a2
 }
 ```
 
-Test delete (DEL) in Postman using a URL like this http://localhost:3000/api/plants/5e38921e9c3bd077f50dc9a2
+Test delete (DEL) in Insomnia using a URL like this http://localhost:4000/api/plants/5e38921e9c3bd077f50dc9a2
 
 Success! We built a full CRUD JSON API in MongoDB, Mongoose, and Express using Express Router!
 
-### Deployment
+## Deployment
 ![](https://miro.medium.com/max/1320/1*owg5RPtazedwH8fxpZF_vg.png)
 > Image from [heroku.com](https://www.heroku.com)
 
@@ -446,14 +454,14 @@ First we need to update our package.json:
   },
 ```
 
-> Make sure you're on the `master` branch!
+> Make sure you're on the `main` branch!
 
 1. `heroku create your-heroku-app-name`
 2. `heroku buildpacks:set heroku/nodejs`
 3. `heroku addons:add mongolab`
 4. `git status`
 5. `git commit -am "add any pending changes"`
-6. `git push heroku master`
+6. `git push heroku main`
 7. `heroku run node seed/plants.js`
 
 > Having issues? Debug with the Heroku command `heroku logs --tail` to see what's happening on the Heroku server.
@@ -573,7 +581,6 @@ Test the endpoints :)
 
 ![](http://www.winsold.com/sites/all/modules/winsold/images/checkmark.svg)
 
-## Bonus
 
 ## Requirements
 
