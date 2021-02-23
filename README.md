@@ -555,38 +555,25 @@ Test delete (DEL) in Insomnia using a URL like this http://localhost:4000/api/pl
 
 Success! We built a full CRUD JSON API in MongoDB, Mongoose, and Express using Express Router! 
 
-## Deployment
+## Deployment with MongoDB Atlas and Heroku
+
 ![](https://miro.medium.com/max/1320/1*owg5RPtazedwH8fxpZF_vg.png)
-> Image from [heroku.com](https://www.heroku.com)
 
-Let's deploy our app to [heroku](https://devcenter.heroku.com/articles/heroku-cli#download-and-install).
-
-
-> Make sure you're on the `main` branch!
-
-1. `heroku create your-heroku-app-name`
-2. `heroku buildpacks:set heroku/nodejs`
-3. `heroku addons:add mongolab`
-4. `git status`
-5. `git commit -am "add any pending changes"`
-6. `git push heroku main`
-7. `heroku run node seed/plants.js`
-
-> Having issues? Debug with the Heroku command `heroku logs --tail` to see what's happening on the Heroku server.
-
-Test the endpoints :)
-
-> https://your-heroku-app-name.herokuapp.com/api/plants
-
-## Bonus: Advanced Deployment using MongoDB Atlas
-
-In the previous deployment we deployed to a Heroku. Heroku created a sandbox MongoDB database which is suitable for testing and development and small production apps. For larger apps that you plan on scaling, MongoDB recommends you use MongoDB Atlas. In this next step we are going to learn how to deploy our app to Heroku and create a production-ready MongoDB database using MongoDB Atlas.
+In this next step we are going to learn how to deploy our app to Heroku and create a production-ready MongoDB database using MongoDB Atlas.
 
 [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) manages our database beautifully - things like scaling the database as it grows, backups, and many more features are all handled by [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
 
+### Creating an Account and Starting a New Project
+
 First step is to signup to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) here: https://www.mongodb.com/cloud/atlas
 
-> Then click the green button "Build a Cluster"
+Once you're logged in you'll need to create a **New Organization** unless you already have one. Your organization will be used for future projects like this.
+
+After creating your organization, you'll need to create a **New Project**. In this case, our project will be called `plantsDatabase`. Once created, we'll get down to business with our database deployment!
+
+### Creating a Database Cluster
+
+Now click the green button `"Build a Cluster"`
 
 <p align="center">
   <img src="https://i.imgur.com/KcgbFXc.png" width="80%"/>
@@ -594,7 +581,7 @@ First step is to signup to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) 
 
 ##
 
-> Select the **free** tier
+Select the **free** tier
 
 <p align="center">
   <img src="https://i.imgur.com/vAgMBoM.png" width="60%"/>
@@ -602,7 +589,7 @@ First step is to signup to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) 
 
 ##
 
-> Select AWS, the N. Virginia free tier, and click the green "Create Cluster" button
+Select AWS, the N. Virginia free tier (Oregon if you're closer to the west coast), and click the green `"Create Cluster"` button
 
 <p align="center">
   <img src="https://i.imgur.com/ylkZwtl.png" width="60%"/>
@@ -610,15 +597,15 @@ First step is to signup to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) 
 
 ##
 
-> Grab a cup of coffee ☕ it will take a few minutes for MongoDB Atlas to create your databases in the cloud
+Grab a cup of coffee ☕ it will take a few minutes for MongoDB Atlas to create your databases in the cloud
 
 <p align="center">
   <img src="https://i.imgur.com/yVn9eLy.png" width="80%"/>
 </p>
 
-##
+### Creating a Connection
 
-> Click the "CONNECT" button
+Once your database has been created, click the `"CONNECT"` button
 
 <p align="center">
   <img src="https://i.imgur.com/OfroaVP.png" width="80%"/>
@@ -626,17 +613,17 @@ First step is to signup to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) 
 
 ##
 
-> You should see a modal pop up. Click "Add a Different IP Address" button
+You should see a modal pop up. Click "Add a Different IP Address" button
 
-> Then enter 0.0.0.0/0 for the IP Address input (this will allow all IP Addresses to access the database)
+Then enter 0.0.0.0/0 for the IP Address input (this will allow all IP Addresses to access the database)
 
-> Click the green "Add IP Address" button
+Click the green `"Add IP Address"` button
 
-> Now let's secure the database. Create a username/password (remember the password, you will need it later)
+Now let's secure the database. Create a username/password (remember the password, you will need it later)
 
-> Click the "Create MongoDB User" button
+Click the green `"Create Database User"` button
 
-> Next, click the "Choose a connection method" button in the lower right of the modal
+Next, click the `"Choose a connection method"` button in the lower right of the modal
 
 <p align="center">
   <img src="https://i.imgur.com/hv860VE.png" width="60%"/>
@@ -644,7 +631,7 @@ First step is to signup to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) 
 
 ##
 
-> Click "Connect Your Application"
+Click `"Connect Your Application"`
 
 <p align="center">
   <img src="https://i.imgur.com/40KJqQt.png" width="60%"/>
@@ -652,22 +639,31 @@ First step is to signup to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) 
 
 ##
 
-> Select the "Connection String Only" tab
+Take a look at the second section, titled `"Add your connection string into your application code"`
 
-> Copy the connection string
 
-<p align="center">
-  <img src="https://i.imgur.com/vZnBMKN.png" width="60%"/>
-</p>
+
+<p align="center"><img src="https://i.imgur.com/vZnBMKN.png" width="60%"/></p>
+
 
 ##
 
+Copy the connection string and put it into a scratch file for the time being
+
+- Replace `<password>`, brackets and all, with the actual password you just set for the Database User. 
+- Replace `myFirstDatabase` with the name of the database that connections will use by default. In this case we named it `plantsDatabase`.
+
+And that will do it for Atlas database hosting! Make sure your updated connection string is ready to go for the next step!
+
+___
+### Deploying Your Server Heroku and Connecting the Database
+
 Now we're ready to deploy to Heroku and specify our MongoDB Atlas URI connection string to tell Heroku where our database lives.
 
-> Make sure you're on the `master` branch!
+> Make sure you're on the `main` branch!
 
 1. `heroku create your-new-heroku-app-name`
-> Note: If you already deployed using the previous deployment lesson you will need to change your heroku remote url:
+
 
 ```sh
 git remote set-url heroku https://git.heroku.com/your-new-heroku-app-name.git
@@ -675,19 +671,27 @@ git remote set-url heroku https://git.heroku.com/your-new-heroku-app-name.git
 
 2. `heroku buildpacks:set heroku/nodejs`
 3. `heroku config:set PROD_MONGODB="<INSERT YOUR MONGODB URI CONNECTION STRING HERE>"`
-    - replace the word test in your connection string with the name of your a database: plantsDatabase
+    - Make sure you've replaced the word test in your connection string with the name of your a database: plantsDatabase
 4. `git status`
 5. `git commit -am "add any pending changes"`
 6. `git push heroku master`
-7. `heroku run node seed/plants.js`
+    - This step will take a second, make sure to allow it to finish before moving on
+8. `heroku run node seed/plants.js`
+    - If all is successful, you'll see something like this in your terminal:
+        
+        ```sh
+        Running node seed/plants.js on ⬢ plantsDatabase... up, run.8137 (Free)
+        Successfully connected to MongoDB.
+        Created some plants!
+        ```
 
-Test the endpoints :)
+Congrats! We've created a fully functional, live, deployed API! Test the endpoints :)
 
-> https://your-heroku-app-name.herokuapp.com/api/plants
+https://your-heroku-app-name.herokuapp.com/api/plants
 
 **Excellent!**
 
-![](http://www.winsold.com/sites/all/modules/winsold/images/checkmark.svg)
+![](https://cdn6.bigcommerce.com/s-oqm1pc/product_images/theme_images/fp-banner-succulent-assortment-1.jpg?t=1490216851)
 
 
 ## Requirements
