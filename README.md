@@ -114,13 +114,13 @@ Awesome, so this plants "seed" file above is a script that, once executed, conne
 
 Let's execute our plants seed file:
 
-```sh
+```shell
 node seed/plants.js
 ```
 
 So how do we know if it worked? We could drop into the `mongo` interactive shell and check:
 
-```sh
+```mongo
 mongo
 > use plantsDatabase
 > db.plants.find()
@@ -211,11 +211,10 @@ Test the root endpoint in your browser: http://localhost:4000/api/
     ```
 - And something like this in your browser: `This is root!`
 
-
+___
 ### Routes and Controllers
 Good, now let's work on the controllers. Controllers are where we will set up all of our logic e.g. what does the API do when we want to create a new plant? Update a plant? etc.
 
-___
 #### createPlant
 
 u2_hw_mongoose_plants/controllers/index.js
@@ -330,6 +329,8 @@ Use Insomnia to send a POST method to test the create route (http://localhost:40
 ___
 #### getAllPlants
 
+![plant kingdom](https://i1.wp.com/orbitbiotech.com/wp-content/uploads/2018/04/plant-kingdom-Orbit-Biotech-Training.jpg?fit=600%2C285&ssl=1)
+
 Awesome! Now I want to create a controller method to grab all the plants from the database:
 
 u2_hw_mongoose_plants/controllers/index.js
@@ -417,9 +418,8 @@ u2_hw_mongoose_plants/routes/index.js
 router.get('/plants/:id', controllers.getPlantById)
 ```
 
-Test it! (Your URL shold look like this, but with the `_id` of _your Test Plant_:
+Test it! Your URL shold look like this, but with the `_id` of _your Test Plant_ in your URL `:params` :
 http://localhost:4000/api/plants/5e38921e9c3bd077f50dc9a2
-
 
 This is a good point to integrate better logging. Right now, if we check our terminal when we hit the http://localhost:4000/api/plants/5e38921e9c3bd077f50dc9a2 endpoint we see the raw SQL that was executed. For debugging purposes and overall better logging we're going to use an express middleware called `morgan`:
 
@@ -462,17 +462,24 @@ app.use(logger('dev'))
 
 
 Let's see the result:
+
 ```sh
 npm run dev
+```
+
+In another terminal, run:
+```
 open http://localhost:4000/api/plants/5e38921e9c3bd077f50dc9a2
 ```
 
-You should now see in your terminal something like this:
+You should now see in your server's terminal something like this:
 ```sh
 GET /api/plants/5e38921e9c3bd077f50dc9a2 200 14.273 ms
 ```
 
-That's `morgan`!
+That's `morgan`! That's some good logging!
+
+![logging](https://media0.giphy.com/media/49HINwAf1JOuI/giphy.gif)
 
 ___
 #### updatePlant and deletePlant
@@ -523,6 +530,7 @@ module.exports = {
 }
 ```
 
+
 Let's add our routes:
 
 u2_hw_mongoose_plants/routes/index.js
@@ -531,7 +539,7 @@ router.put('/plants/:id', controllers.updatePlant)
 router.delete('/plants/:id', controllers.deletePlant)
 ```
 
-Test update (PUT) in Insomnia. Your request body in Insomnia will have to look something like this:
+Test update (PUT) in Insomnia. Remember that you'll have to use the `_id` of _your_ Test Plant. Your request body in Insomnia will have to look something like this:
 
 http://localhost:4000/api/plants/5e38921e9c3bd077f50dc9a2
 
@@ -545,7 +553,7 @@ http://localhost:4000/api/plants/5e38921e9c3bd077f50dc9a2
 
 Test delete (DEL) in Insomnia using a URL like this http://localhost:4000/api/plants/5e38921e9c3bd077f50dc9a2
 
-Success! We built a full CRUD JSON API in MongoDB, Mongoose, and Express using Express Router!
+Success! We built a full CRUD JSON API in MongoDB, Mongoose, and Express using Express Router! 
 
 ## Deployment
 ![](https://miro.medium.com/max/1320/1*owg5RPtazedwH8fxpZF_vg.png)
@@ -553,15 +561,6 @@ Success! We built a full CRUD JSON API in MongoDB, Mongoose, and Express using E
 
 Let's deploy our app to [heroku](https://devcenter.heroku.com/articles/heroku-cli#download-and-install).
 
-First we need to update our package.json:
-
-```js
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "dev": "nodemon server.js"
-  },
-```
 
 > Make sure you're on the `main` branch!
 
