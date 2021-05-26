@@ -35,7 +35,7 @@ mongodb-mongoose-express-using-router/db/index.js
 ```js
 const mongoose = require('mongoose')
 
-let MONGODB_URI = process.env.PROD_MONGODB || process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/plantsDatabase'
+let MONGODB_URI = 'mongodb://127.0.0.1:27017/plantsDatabase'
 
 mongoose
     .connect(MONGODB_URI, { useUnifiedTopology: true, useNewUrlParser: true })
