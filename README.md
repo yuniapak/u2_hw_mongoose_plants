@@ -16,7 +16,6 @@ In this deliverable we'll be building our very own custom API about plants! We'l
 Let's start!
 
 ```sh
-cd u2_hw_mongoose_plants
 npm init -y && npm install mongoose@5.11.15
 mkdir db models seed
 touch db/index.js models/plant.js seed/plants.js
