@@ -124,6 +124,7 @@ So how do we know if it worked? We could drop into the `mongo` interactive shell
 mongo
 > use plantsDatabase
 > db.plants.find()
+> exit
 ```
 
 Create a .gitignore file `touch .gitignore`!
@@ -140,6 +141,19 @@ Cool, enough Mongoose. Now, Express. Let's install Express and Nodemon for devel
 npm install express
 npm install nodemon --dev
 ```
+
+Add the scripts to your `package.json`:
+
+```sh
+...
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+...
+```
+
 And now let's setup our express folders:
 
 ```sh
