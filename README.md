@@ -16,7 +16,8 @@ In this deliverable we'll be building our very own custom API about plants! We'l
 Let's start!
 
 ```sh
-npm init -y && npm install mongoose@5.11.15
+npm init -y
+npm install mongoose
 mkdir db models seed
 touch db/index.js models/plant.js seed/plants.js
 ```
@@ -137,7 +138,7 @@ Cool, enough Mongoose. Now, Express. Let's install Express and Nodemon for devel
 
 ```sh
 npm install express
-npm install --save-dev nodemon
+npm install nodemon --dev
 ```
 And now let's setup our express folders:
 
@@ -145,19 +146,6 @@ And now let's setup our express folders:
 mkdir routes controllers
 touch server.js routes/index.js controllers/index.js
 ```
-
-Modify your package.json file:
-
-```js
-....
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "dev": "nodemon server.js"
-  },
-....
-```
-
 
 Let's setup the root route:
 
