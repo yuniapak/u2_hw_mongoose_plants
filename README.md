@@ -571,7 +571,3 @@ Success! We built a full CRUD JSON API in MongoDB, Mongoose, and Express using E
 
 ## Submission Guidelines
 - Pull Request must be submitted utilizing these guidelines: [PR Guidelines](https://github.com/SEI-R-4-26/template_pull_request)
-
-## Resources
-- [Mongoose Express Lesson](https://github.com/SEI-R-7-26/u2_lesson_mongoose_express)
-- [Mongoose Data Model Lesson](https://github.com/SEI-R-7-26/u2_lesson_mongoose_data_model)
