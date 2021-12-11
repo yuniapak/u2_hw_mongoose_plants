@@ -523,8 +523,8 @@ const deletePlant = async (req, res) => {
 Make sure your exports are updated:
 ```js
 module.exports = {
-    createUser,
-    getAllUsers,
+    createPlant,
+    getAllPlants,
     getUserById,
     updatePlant,
     deletePlant
