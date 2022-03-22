@@ -139,7 +139,7 @@ Cool, enough Mongoose. Now, Express. Let's install Express and Nodemon for devel
 
 ```sh
 npm install express
-npm install nodemon --dev
+npm install nodemon --save-dev
 ```
 
 Add the scripts to your `package.json`:
