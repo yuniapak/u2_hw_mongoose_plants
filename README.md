@@ -187,6 +187,8 @@ const PORT = process.env.PORT || 3001;
 
 const app = express();
 
+app.use(express.json())
+
 // app.use() middleware here ^ ///////////////////
 
 app.use('/api', routes);
@@ -239,20 +241,7 @@ module.exports = {
 }
 ```
 
-Remember we will need the express `body-parser` middleware to access the `req.body` object.
 
-Make sure to shut down your server with `ctrl + c` first, then run:
-
-```sh
-npm i body-parser
-```
-
-And add the following lines of code to server.js:
-
-```js
-const bodyParser = require('body-parser');
-app.use(bodyParser.json())
-```
 
 <details><summary>server.js should look like this afterward:</summary>
     
@@ -279,11 +268,7 @@ app.use(bodyParser.json())
     
 </details>
 
-Run the server again:
 
-```sh
-npm run dev
-```
 
 Cool. We have the logic to create a new plant. Now let's create a route on our server to connect the request with the controller:
 
